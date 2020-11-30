@@ -1,0 +1,276 @@
+body {
+    width: 100% auto;
+    margin: 0;
+    padding: 0;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.box {
+    width: 100% auto;
+}
+
+.top_box1 {
+    width: 100%;
+    height: 94px;
+    position: fixed;
+    background-color: #060606;
+    z-index: 100;
+}
+
+.top_box2 {
+    margin-top: 90px;
+    width: 100%;
+    height: 64px;
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 0 5px 0 gray;
+    z-index: 100;
+}
+
+.logo_box {
+    margin-left: 10%;
+    height: 88px;
+}
+
+.menu_box {
+    margin-left: 10%;
+    height: 64px;
+    width: 80%;
+}
+
+.logoimg {
+	width: fit-content;
+	float: left;
+}
+
+.logotext {
+    margin-left: 30%;
+    float: left;
+}
+
+.other {
+    float: left;
+    height: 44px;
+    width: 40%;
+    font-weight: bold;
+}
+
+.other_ul {
+    float: right;
+}
+
+.other_ul_li {
+    float: right;
+    margin-left: 30px;
+    color: white;
+    list-style-type: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.other_ul_li_a:link {
+    color: white;
+}
+
+.other_ul_li_a:visited {
+    color: white;
+}
+
+.other_ul_li_a:visited:hover {
+    color: tomato;
+}
+
+.other_ul_li:hover {
+    color: tomato;
+}
+
+.menu {
+    float: left;
+    height: 64px;
+    width: 80%;
+    font-weight: bold;
+}
+
+.menu_ul {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.menu_ul_li {
+    width: 100px;
+    text-align: center;
+    float: left;
+    margin-top: 15px;
+    margin-right: 140px;
+    color: black;
+    list-style-type: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.menu_ul_li:hover {
+    color: tomato;
+}
+
+.menu_ul_li:hover .fun_box {
+    display: block;
+}
+
+.menu_ul_li_a:link {
+    color: black;
+}
+
+.menu_ul_li_a:visited {
+    color: black;
+}
+
+.menu_ul_li_a:visited:hover {
+    color: tomato;
+}
+
+.search {
+    float: right;
+    height: 64px;
+    width: 300px;
+}
+
+.searchinput {
+    float: left;
+    width: 250px;
+    height: 34px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    outline: none;
+}
+
+button {
+    width: 40px;
+    height: 40px;
+    margin-top: 15px;
+}
+
+.fun_box {
+    margin: 20px auto;
+    width: 100px;
+    height: 300px;
+    display: none;
+    background-color: whitesmoke;
+    border: 1px solid gainsboro;
+}
+
+.fun_box_ul {
+    margin: 0;
+    padding: 0;
+}
+
+.fun_box_ul_li {
+    width: 100px;
+    text-align: center;
+    float: left;
+    margin-top: 15px;
+    margin-right: 140px;
+    color: black;
+    list-style-type: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.fun_box_ul_li:hover {
+    background-color: silver;
+}
+
+.fun_box_ul_li_a:link {
+    color: black;
+}
+
+.fun_box_ul_li_a:visited {
+    color: black;
+}
+
+.adbox {
+    position: relative;
+    width: 100%;
+    height: 750px;
+    top: 155px;
+    overflow: hidden;
+}
+
+.adbox_slides {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 4000px;
+    left: 0px;
+    transition: all .5s;
+}
+
+.adbox_slides li {
+    margin: 0;
+    padding: 0;
+    width: 2000px;
+    height: 750px;
+    overflow: hidden;
+    float: left;
+}
+
+.adbox_slides li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.adbox_dot {
+    position: relative;
+    width: 100%;
+    margin-top: 730px;
+    display: flex;
+    justify-content: center;
+}
+
+.adbox_dot li {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border: 1px solid black;
+    border-radius: 50%;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.adbox_dot li:hover {
+    background: black;
+}
+
+.adbox_btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    font-size: 24px;
+}
+
+#prevbtn {
+    left: 0;
+    cursor: pointer;
+}
+
+#nextbtn {
+    right: 0;
+    cursor: pointer;
+}
+
+.adbox_btn i {
+    transition: .5s;
+}
+
+.adbox_btn:hover {
+    color: gainsboro;
+}

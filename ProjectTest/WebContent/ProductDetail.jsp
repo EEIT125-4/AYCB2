@@ -1,0 +1,125 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@page import="product.*"%>
+<%@page import="java.util.*"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<sql:setDataSource var="ds" dataSource="jdbc/EmployeeDB" />
+<sql:query sql="select distinct brand_name from profinal" var="rs1"
+	dataSource="${ds}" />
+<sql:query sql="select distinct product_series from profinal" var="rs2"
+	dataSource="${ds}" />
+<sql:query sql="select distinct product_category from profinal"
+	var="rs3" dataSource="${ds}" />
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
+<script src="js/inside.js" defer="defer"></script>
+<link REL=STYLESHEET HREF="css/inside.css" TYPE="text/css">
+<link REL=STYLESHEET HREF="css/ProductDetail.css" TYPE="text/css">
+<title>All You Can Buy</title>
+</head>
+<%@include file="jspf/header.jspf"%>
+<div class="contentoutbox">
+	<div class="contentbox">
+		<div class="leftside">
+			<div class="condition">條件篩選</div>
+			<div class="category">
+				<div class="catediv">
+					廠商分類<a id="a1" class="catea" href="#" onclick="show1()">+</a>
+				</div>
+				<ul id="ul1" class="cateul">
+					<c:forEach var="brandname" items="${rs1.rows}">
+						<li class="cateul_li"><a class="cateul_li_a"
+							href="Screening?brandname=${brandname.brand_name}">${brandname.brand_name}</a></li>
+					</c:forEach>
+				</ul>
+				<div class="catediv">
+					系列分類<a id="a2" class="catea" href="#" onclick="show2()">+</a>
+				</div>
+				<ul id="ul2" class="cateul">
+					<c:forEach var="series" items="${rs2.rows}">
+						<li class="cateul_li"><a class="cateul_li_a"
+							href="Screening?series=${series.product_series}">${series.product_series}</a></li>
+					</c:forEach>
+				</ul>
+				<div class="catediv">
+					種類分類<a id="a3" class="catea" href="#" onclick="show3()">+</a>
+				</div>
+				<ul id="ul3" class="cateul">
+					<c:forEach var="cate" items="${rs3.rows}">
+						<li class="cateul_li"><a class="cateul_li_a"
+							href="Screening?cate=${cate.product_category}">${cate.product_category}</a></li>
+					</c:forEach>
+				</ul>
+			</div>
+		</div>
+		<div class="rightoutbox">
+			<%
+				for (int i = 0; i < ProductDetailDB.size(); i++) {
+			%>
+			<form name="AddForm" action="ControllerServlet" method="POST">
+				<input type="hidden" name="todo" value="add">
+				<div class="rightside">
+					<div class="imgbox">
+						<a href="#"><img
+							src="image/<%=ProductDetailDB.getProduct_Name(i)%>.png"></a>
+					</div>
+				</div>
+				<div class="infobox">
+					<div class="infoname"><%=ProductDetailDB.getProduct_Name(i)%></div>
+					<div class="infono">
+						商品編號：<%=ProductDetailDB.getBrand_No(i)%><%=ProductDetailDB.getProduct_No(i)%></div>
+					<hr>
+					<div class="infoseries">
+						系列：<%=ProductDetailDB.getProduct_Series(i)%></div>
+					<div class="infocate">
+						種類：<%=ProductDetailDB.getProduct_Category(i)%></div>
+					<hr>
+					<div class="infoprice">
+						NT$：<%=ProductDetailDB.getProduct_Price(i)%></div>
+					<div style="display:<%=session.getAttribute("login_session")!=null?"block":"none" %>">
+					<div class="infocount" >
+					
+					
+						數量 :
+						<div class="selbox">
+							<select name="count" class="countsel">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div>
+						<div class="infobtn">
+						
+							<input class="btn" type=<%=session.getAttribute("login_session")!=null?"submit":"hidden"%> value="加入購物車"> 
+							
+							<input	type="hidden" name="product_No" value=<%=ProductDetailDB.getProduct_No(i)%>>
+						</div>
+					</div>
+					</div>
+				</div>
+			</form>
+			<%
+				}
+			%>
+		</div>
+		<%@include file="jspf/footer.jspf"%>
+	</div>
+</div>
+</div>
+</body>
+</html>

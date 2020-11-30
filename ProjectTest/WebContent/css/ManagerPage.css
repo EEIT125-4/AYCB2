@@ -1,0 +1,10 @@
+.addproduct {
+	margin-left: 20px;
+}
+
+.addproduct_btn {
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	outline: none;
+}
