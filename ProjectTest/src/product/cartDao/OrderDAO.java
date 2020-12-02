@@ -1,4 +1,4 @@
-package product;
+package product.cartDao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.plaf.synth.SynthScrollBarUI;
+
+import product.OrderBean;
 
 
 
@@ -36,7 +38,7 @@ public class OrderDAO {
 			}
 			stmt.close();
 			conn.close();
-			System.out.println("DAO"+order.getCustomer_Id());
+			System.out.println("DAO"+order.getCustomerId());
 			return (ArrayList<OrderBean>) list;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -63,8 +65,8 @@ public class OrderDAO {
 			}
 			max++;
 			//pstmt.setInt(1, max);
-			pstmt.setString(1, order.getCustomer_Id());
-			System.out.println("getCustomer_Id"+order.getCustomer_Id());
+			pstmt.setString(1, order.getCustomerId());
+			System.out.println("getCustomer_Id"+order.getCustomerId());
 			//pstmt.setString(1, "紀子雲");
 			java.util.Date date = new Date(); 
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());			
@@ -96,7 +98,7 @@ public class OrderDAO {
 		){
 			System.out.println("innnnnnnnnnnnn");
 			pstmt.setInt(6, order.getOrder_No());
-			pstmt.setString(1, order.getCustomer_Id());
+			pstmt.setString(1, order.getCustomerId());
 			java.sql.Date sqlDate = new java.sql.Date(order.getOrder_time().getTime());
 			pstmt.setDate(2, sqlDate);
 			pstmt.setInt(3, order.getPrice());
@@ -154,7 +156,7 @@ public class OrderDAO {
 			){
 			while (rs.next()) {
 				order.setOrder_No(rs.getInt("order_No"));
-				order.setCustomer_Id(rs.getString("customer_Id"));
+				order.setCustomerId(rs.getString("customer_Id"));
 				order.setOrder_time(rs.getDate("order_time"));
 				order.setPrice(rs.getInt("price"));
 				order.setQuantity(rs.getInt("quantity"));
@@ -162,7 +164,7 @@ public class OrderDAO {
 			}
 			stmt.close();
 			conn.close();
-			System.out.println("DAO"+order.getCustomer_Id());
+			System.out.println("DAO"+order.getCustomerId());
 			return order;
 		} catch (SQLException e) {
 			

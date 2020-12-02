@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class OrderBean implements Serializable {
 	
-	private int  order_No;
-	private String customer_Id;
-	private Date order_time;
+	private int  orderNo;
+	private String customerId;
+	private Date ordertime;
 	private int price;
 	private int quantity;
 	private String status;	
@@ -14,59 +14,65 @@ public class OrderBean implements Serializable {
 	public OrderBean() {
 		
 	}
-	
-	public OrderBean(int order_No, String customer_Id, Date order_time, int price, int quantity, String status) {
+
+	public OrderBean(int orderNo, String customerId, Date ordertime, int price, int quantity, String status) {
 		super();
-		this.order_No = order_No;
-		this.customer_Id = customer_Id;
-		this.order_time = order_time;
+		this.orderNo = orderNo;
+		this.customerId = customerId;
+		this.ordertime = ordertime;
 		this.price = price;
 		this.quantity = quantity;
 		this.status = status;
 	}
-	
-	public int getOrder_No() {
-		return order_No;
+
+	public int getOrderNo() {
+		return orderNo;
 	}
-	public void setOrder_No(int order_No) {
-		this.order_No = order_No;
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
 	}
-	public String getCustomer_Id() {
-		return customer_Id;
+
+	public String getCustomerId() {
+		return customerId;
 	}
-	public void setCustomer_Id(String customer_Id) {
-		this.customer_Id = customer_Id;
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
-	public Date getOrder_time() {
-		return order_time;
+
+	public Date getOrdertime() {
+		return ordertime;
 	}
-	public void setOrder_time(Date order_time) {
-		this.order_time = order_time;
+
+	public void setOrdertime(Date ordertime) {
+		this.ordertime = ordertime;
 	}
+
 	public int getPrice() {
 		return price;
 	}
+
 	public void setPrice(int price) {
 		this.price = price;
 	}
+
 	public int getQuantity() {
 		return quantity;
 	}
+
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "OrderBean [order_No=" + order_No + ", customer_Id=" + customer_Id + ", order_time=" + order_time
-				+ ", price=" + price + ", quantity=" + quantity + ", status=" + status + "]";
-	}
-
+	
 	
 	
 	

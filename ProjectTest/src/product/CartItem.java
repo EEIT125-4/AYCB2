@@ -4,7 +4,6 @@ public class CartItem {
 	private int product_No;
 	private int qtyOrdered;//採購數量
 
-	
 	public CartItem(int product_No, int qtyOrdered) {
 		
 		this.product_No = product_No;

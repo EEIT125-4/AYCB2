@@ -1,4 +1,4 @@
-package product;
+package product.cartController;
 
 import java.io.*;
 import java.sql.Connection;
@@ -13,6 +13,9 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
+
+import product.CartItem;
+import product.ProductDB;
 
 
 /**

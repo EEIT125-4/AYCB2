@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 
 
 import member.MemberBean;
+import product.cartDao.OrderDAO;
 
 /**
  * Servlet implementation class OrderServlet
@@ -90,7 +91,7 @@ public class OrderInsertServlet extends HttpServlet {
 			
 			int totalQtyOrder=(Integer) request.getSession(true).getAttribute("totalQtyOrdered");
 			MemberBean memberBean =((MemberBean)request.getSession(true).getAttribute("login_session"));
-			order.setCustomer_Id(memberBean.getName());
+			order.setCustomerId(memberBean.getName());
 			System.out.println("memberBean"+memberBean.getName());
 			order.setPrice(totalPrice);
 			order.setQuantity(totalQtyOrder);
