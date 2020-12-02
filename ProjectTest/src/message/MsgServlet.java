@@ -13,12 +13,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
+
 //import javax.rmi.*;
 import javax.naming.*;
 import javax.sql.*;
 
-import org.apache.naming.java.javaURLContextFactory;
+
 
 import message.MsgBean;
 import tool.Common;
@@ -71,24 +71,24 @@ public class MsgServlet extends HttpServlet {
 		String submit = request.getParameter("submit");
 		System.out.println(submit);
 		if (submit != null && !submit.equals("")) {
-			// 編輯
+			// 蝺刻摩
 			if (submit.equals("edit")) {
 				System.out.println("goto edit");
 				gotoEditProcess(request, response);
 			}
-			// 刪除
+			// ��
 			if (submit.equals("delete")) {
 				System.out.println("goto delete");
 				gotoDeleteProcess(request, response);
 
 			}
-			// 送出
-			if (submit.equals("送出")) {
+			// �
+			if (submit.equals("�")) {
 				System.out.println("go to  subit process");
 				gotoSubmitProcess(request, response);
 			}
-			// 更新
-			if (submit.equals("更新")) {
+			// ��
+			if (submit.equals("��")) {
 				System.out.println("goto update");
 				gotoUpdateProcess(request, response);
 			}
@@ -111,10 +111,10 @@ public class MsgServlet extends HttpServlet {
 			MsgDAO dao = new MsgDAO();
 
 			if (dao.deleteMsg(msg_id)) {
-				System.out.println("刪除成功");
+				System.out.println("������");
 
 			} else {
-				System.out.println("刪除失敗");
+				System.out.println("��憭望��");
 			}
 
 		} finally {
@@ -123,7 +123,7 @@ public class MsgServlet extends HttpServlet {
 			} catch (IOException e) {
 
 				e.printStackTrace();
-				System.out.println("delete結束,導向失敗");
+				System.out.println("delete蝯��,撠�仃���");
 			}
 		}
 
@@ -145,12 +145,12 @@ public class MsgServlet extends HttpServlet {
 			if (request.getPart("file") != null)
 
 			{
-				// 注意,這裡是專案下絕對路徑..
+				// 瘜冽��,�ㄐ�撠����楝敺�..
 				if (msg_path != null && !msg_path.equals("")) {
 					System.out.println("msg_path:" + msg_path);
 					String path = msg_path.substring(msg_path.lastIndexOf("/"));
 					path = "C:\\Users\\user\\eclipse-workspace\\AYCB\\WebContent\\myProject\\upload" + path;
-					System.out.println("是否存在檔案?" + new File(path).exists());
+					System.out.println("��摮瑼��?" + new File(path).exists());
 
 					if (Common.deleteFile(path)) {
 
@@ -160,29 +160,29 @@ public class MsgServlet extends HttpServlet {
 					}
 				}
 			}
-			// 此建構式會判斷request下有沒有檔案,有的話會刪除舊檔並設置新檔案路徑到bean中
+			// 甇文遣瑽���request銝������,���店������蒂閮剔蔭�瑼�楝敺bean銝�
 			MsgBean updateData = new MsgBean(msg_id, msg_title, msg_desc, msg_type, request);
 
 			if (msgDAO.updateMsg(updateData)) {
-				System.out.println("更新成功");
+				System.out.println("������");
 				response.sendRedirect("./MsgPage.jsp");
 
 			} else {
-				System.err.println("更新失敗");
+				System.err.println("��憭望��");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("sth error");
 		}
 
-		// 先把舊圖片刪除
+		// �������
 
 		/*
 		 * String path = msgData.getMsg_imgpath(); if (path != null || !path.equals(""))
 		 * {
 		 * 
-		 * if (deleteFile(path)) { System.out.println("成功刪除舊檔案"); } else {
-		 * System.out.println("刪除舊檔失敗"); } ;
+		 * if (deleteFile(path)) { System.out.println("���������"); } else {
+		 * System.out.println("�����仃���"); } ;
 		 * 
 		 * }
 		 */
@@ -191,7 +191,7 @@ public class MsgServlet extends HttpServlet {
 
 	public void gotoEditProcess(HttpServletRequest request, HttpServletResponse response) {
 
-		// 邏輯是根據id名稱設定session bean,然後帶去NewMsg.jsp頁面,如果有bean執行A,否執行B
+		// ��摩����d��迂閮剖�ession bean,�敺葆�NewMsg.jsp��,憒��ean�銵,��銵
 
 		try {
 			MsgDAO dao = new MsgDAO();
@@ -202,12 +202,12 @@ public class MsgServlet extends HttpServlet {
 
 			MsgBean msgBean = null;
 			while (rs.next()) {
-				// 產生一個bean
+				// �����ean
 				msgBean = new MsgBean(rs);
 
 			}
 			System.out.println("path" + msgBean.getMsg_imgpath());
-			// 設定正要編輯的bean
+			// 閮剖�迤閬楊頛舐�ean
 			// request.getSession(true).setAttribute("edit_msg",msgBean);
 			request.setAttribute("edit_msg", msgBean);
 			request.getRequestDispatcher("/NewMsg.jsp").forward(request, response);
@@ -227,18 +227,18 @@ public class MsgServlet extends HttpServlet {
 
 	public void gotoSubmitProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 原則上送出不檢查直接加入資料庫
-		// 最好能自動取號,取得rs 日期與現在同一天的筆數
-		// 若rs=null,創建日期流水編第一筆
-		// 若rs!=null,編號為日期+(目前筆數+1)
+		// �����銝炎�����鞈�澈
+		// ��憟質������,���s ��������憭拍��
+		// �rs=null,�撱箸���偌蝺函洵銝�蝑�
+		// �rs!=null,蝺刻�����+(����+1)
 
 		System.out.println("in subit process");
-		// 取得submit過來的資料
+		// ���ubmit�������
 		String msg_title = request.getParameter("title").trim();
 		String msg_desc = request.getParameter("desc").trim();
 		System.out.println("textArea:" + msg_desc);
 		String msg_type = request.getParameter("type").trim();
-		// 以JAVADATE取得今天日期的long,再轉為SQLDATE
+		// 隞仔AVADATE����予����ong,���SQLDATE
 		java.sql.Date msg_date = new java.sql.Date(new Date().getTime());
 		MsgBean msgBean = new MsgBean("", msg_title, msg_desc, msg_type, msg_date);
 
@@ -248,7 +248,7 @@ public class MsgServlet extends HttpServlet {
 
 		try {
 			MsgDAO dao = new MsgDAO();
-			// 產生流水號ID
+			// ����偌��D
 			String sql = ("select *from message where msg_date=") + "'" + sqlCondition + "'" + "order by msg_id";
 			System.out.println(sql);
 			ResultSet rs = dao.getResultSet(sql);
@@ -275,18 +275,18 @@ public class MsgServlet extends HttpServlet {
 
 			msgBean.setMsg_id(tempID);
 
-			// 考慮後還是分段進行,只要資料正確就先insert進資料庫,後再嘗試加入圖片,即使圖片有問題也先新增一筆訊息
+			// �敺���挾�脰��,�閬��迤蝣箏停��nsert�脰��澈,敺��岫������,�雿踹�������憓�蝑�
 			if (dao.insertMsg(msgBean)) {
-				// 如果插入資料庫成功,嘗試加入圖片到專案
-				System.out.println("成功insert進資料庫,寫入圖片到資料夾");
+				// 憒��鞈�澈����,��岫�����撠��
+				System.out.println("���nsert�脰��澈,撖怠���鞈�冗");
 				String path = dao.uploadImage(request);
 
 				if (path != null && !path.equals("")) {
-					// 成功上傳圖片才會有路徑,如果成功就更新資料庫圖片路徑
+					// ����������楝敺�,憒���停��鞈�澈���楝敺�
 					msgBean.setMsg_imgpath(path);
 					dao.updateImgPath(msgBean);
 				} else {
-					System.err.println("沒有上傳圖片");
+					System.err.println("瘝������");
 				}
 
 			}
@@ -294,31 +294,31 @@ public class MsgServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("上傳過程發生異常");
+			System.err.println("銝�����撣�");
 
 		} finally {
 			response.sendRedirect("./MsgPage.jsp");
 
 		}
 
-		// 多檔案上傳之後再做
+		// 憭���銋����
 		/*
 		 * Collection<Part> list = request.getParts(); for (Part p : list) {
 		 * 
-		 * // 獲取上傳的檔名稱
+		 * // ��������迂
 		 * 
-		 * String filename = p.getSubmittedFileName(); // 建立要儲存的檔案物件 File file = new
+		 * String filename = p.getSubmittedFileName(); // 撱箇��摮���隞� File file = new
 		 * File(createDir(getServletContext()), createName(filename));
 		 * 
-		 * // 儲存檔案 p.write(file.getAbsolutePath());
-		 * System.out.printf("成功寫入圖片,絕對路徑:%s\n",file.getAbsoluteFile());
+		 * // �摮��� p.write(file.getAbsolutePath());
+		 * System.out.printf("���神�����,蝯�楝敺�:%s\n",file.getAbsoluteFile());
 		 * 
 		 * 
 		 * }
 		 */
 
 		// request.getRequestDispatcher("/NewMsg.jsp").forward(request, response);
-		// 導引回留言列
+		// 撠�������
 
 		// getServletContext().getRequestDispatcher("/MsgPage.jsp").forward(request,
 		// response);
