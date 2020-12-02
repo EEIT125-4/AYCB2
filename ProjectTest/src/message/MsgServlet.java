@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.naming.*;
 import javax.sql.*;
 
-import org.apache.naming.java.javaURLContextFactory;
+
 
 import message.MsgBean;
 import tool.Common;
