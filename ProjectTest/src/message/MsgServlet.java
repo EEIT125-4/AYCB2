@@ -13,13 +13,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
 //import javax.rmi.*;
 import javax.naming.*;
 import javax.sql.*;
-
-
-
 import message.MsgBean;
 import tool.Common;
 
@@ -76,7 +72,7 @@ public class MsgServlet extends HttpServlet {
 				System.out.println("goto edit");
 				gotoEditProcess(request, response);
 			}
-			// 刪除
+			// 刪除
 			if (submit.equals("delete")) {
 				System.out.println("goto delete");
 				gotoDeleteProcess(request, response);
@@ -301,7 +297,6 @@ public class MsgServlet extends HttpServlet {
 
 		}
 
-		// 多檔案上傳之後再做
 		/*
 		 * Collection<Part> list = request.getParts(); for (Part p : list) {
 		 * 
@@ -312,7 +307,6 @@ public class MsgServlet extends HttpServlet {
 		 * 
 		 * // 儲存檔案 p.write(file.getAbsolutePath());
 		 * System.out.printf("成功寫入圖片,絕對路徑:%s\n",file.getAbsoluteFile());
-		 * 
 		 * 
 		 * }
 		 */
