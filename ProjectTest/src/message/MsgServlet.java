@@ -16,7 +16,6 @@ import java.util.Date;
 //import javax.rmi.*;
 import javax.naming.*;
 import javax.sql.*;
-
 import message.MsgBean;
 import tool.Common;
 
