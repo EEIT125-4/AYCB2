@@ -1,5 +1,5 @@
 
-package comment;
+package old;
 
 //專責與Comment Table之新增,修改,刪除與查詢
 

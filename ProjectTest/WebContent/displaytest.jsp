@@ -44,7 +44,7 @@ response.setDateHeader("Expires", -1); // Prevents caching at the proxy server
 			</dl>
 		</div>
 		</div>
-		<jsp:useBean id="dis_board" class="comment.DiscussionBean" scope="session" />
+		<jsp:useBean id="dis_board" class="old.DiscussionBean" scope="session" />
 	
   <form action=".\Controller" method="post">
    <fieldset class="confirmbox">

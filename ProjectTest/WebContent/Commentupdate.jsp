@@ -9,7 +9,7 @@
 %>
 <link rel="stylesheet" href="css/comment.css" />
 
-<jsp:useBean id="bean" class="comment.DiscussionBean" scope="session" />
+<jsp:useBean id="bean" class="old.DiscussionBean" scope="session" />
 
 <fieldset class="updateform">
 	<legend class="title">編輯留言</legend>
