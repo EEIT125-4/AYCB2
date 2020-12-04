@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.servlet.RequestDispatcher;
-//import javax.servlet.http.*;
-//import java.io.PrintWriter;
-//import java.io.IOException;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
+//import javax.rmi.*;
+import javax.naming.*;
+import javax.sql.*;
+import message.MsgBean;
+import tool.Common;
+
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
