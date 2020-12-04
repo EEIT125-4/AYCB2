@@ -1,31 +1,28 @@
 package message;
 
-import javax.servlet.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
 //import javax.servlet.http.*;
 //import java.io.PrintWriter;
 //import java.io.IOException;
-
-import java.io.*;
-
-import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-
-//import javax.rmi.*;
-import javax.naming.*;
-import javax.sql.*;
-
-import message.MsgBean;
-import tool.Common;
-
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.HttpSession;
+
+import message.model.MessageBean;
+import message.service.MessageService;
+import message.service.impl.MessageServiceImpl;
+import tool.Common;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -191,13 +188,16 @@ public class MsgServlet extends HttpServlet {
 		// 邏輯是根據id名稱設定session bean,然後帶去NewMsg.jsp頁面,如果有bean執行A,否執行B
 
 		try {
+			MsgBean msgBean = null;
+			MessageService ms=new MessageServiceImpl();
+			
 			MsgDAO dao = new MsgDAO();
 
 			String sql = ("select *from message where msg_id=") + "'" + request.getParameter("msg_id") + "'";
 			System.out.println(sql);
 			ResultSet rs = dao.getResultSet(sql);
 
-			MsgBean msgBean = null;
+			
 			while (rs.next()) {
 				// 產生一個bean
 				msgBean = new MsgBean(rs);
@@ -228,95 +228,41 @@ public class MsgServlet extends HttpServlet {
 		// 最好能自動取號,取得rs 日期與現在同一天的筆數
 		// 若rs=null,創建日期流水編第一筆
 		// 若rs!=null,編號為日期+(目前筆數+1)
-
 		System.out.println("in subit process");
-		// 取得submit過來的資料
-		String msg_title = request.getParameter("title").trim();
-		String msg_desc = request.getParameter("desc").trim();
-		System.out.println("textArea:" + msg_desc);
-		String msg_type = request.getParameter("type").trim();
-		// 以JAVADATE取得今天日期的long,再轉為SQLDATE
-		java.sql.Date msg_date = new java.sql.Date(new Date().getTime());
-		MsgBean msgBean = new MsgBean("", msg_title, msg_desc, msg_type, msg_date);
-
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-		String sqlCondition = f.format(msgBean.getMsg_date());
-		System.out.println(sqlCondition);
-
+		
 		try {
-			MsgDAO dao = new MsgDAO();
-			// 產生流水號ID
-			String sql = ("select *from message where msg_date=") + "'" + sqlCondition + "'" + "order by msg_id";
-			System.out.println(sql);
-			ResultSet rs = dao.getResultSet(sql);
-			String ID = "";
-			int count = 1;
-			while (rs.next()) {
-				count++;
-				ID = rs.getString("msg_id");
+			
+			// 取得submit過來的資料
+			String msg_title = request.getParameter("title").trim();
+			String msg_desc = request.getParameter("desc").trim();
+			System.out.println("textArea:" + msg_desc);
+			String msg_type = request.getParameter("type").trim();
+			// 以JAVADATE取得今天日期的long,再轉為SQLDATE
+			java.sql.Date msg_date = new java.sql.Date(new Date().getTime());
+			MsgBean msgBean = new MsgBean("", msg_title, msg_desc, msg_type, msg_date);
 
-				System.out.println("count=" + count + ":" + ID);
-
-			}
-			int lastIndex;
-			if (count == 1) {
-				lastIndex = 1;
-			} else {
-				lastIndex = Integer.parseInt(ID.substring(ID.length() - 3)) + 1;
-			}
-
-			// System.out.printf("count=%d,lastIndex=%d\n", count, lastIndex);
-
-			String tempID = sqlCondition.replaceAll("-", "") + String.format("%03d", lastIndex);
-			// System.out.println("tempId=" + tempID);
-
-			msgBean.setMsg_id(tempID);
-
-			// 考慮後還是分段進行,只要資料正確就先insert進資料庫,後再嘗試加入圖片,即使圖片有問題也先新增一筆訊息
-			if (dao.insertMsg(msgBean)) {
-				// 如果插入資料庫成功,嘗試加入圖片到專案
-				System.out.println("成功insert進資料庫,寫入圖片到資料夾");
-				String path = dao.uploadImage(request);
-
-				if (path != null && !path.equals("")) {
-					// 成功上傳圖片才會有路徑,如果成功就更新資料庫圖片路徑
-					msgBean.setMsg_imgpath(path);
-					dao.updateImgPath(msgBean);
-				} else {
-					System.err.println("沒有上傳圖片");
-				}
-
-			}
-			dao.closeConn();
-
-		} catch (Exception e) {
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+			String sqlCondition = f.format(msgBean.getMsg_date());
+			System.out.println(sqlCondition);
+			MessageBean mb=new MessageBean(msg_title, msg_desc, msg_type,"", msg_date);
+			
+			MessageService ms=new MessageServiceImpl();
+			HttpSession session=request.getSession();
+			ms.save(mb);
+					
+		}catch(Exception e){
 			e.printStackTrace();
 			System.err.println("上傳過程發生異常");
-
-		} finally {
-			response.sendRedirect("./MsgPage.jsp");
-
+			RequestDispatcher rd = request.getRequestDispatcher("/NewMsg.jsp");
+			rd.forward(request,response);
+			return;
+			
+			
 		}
-
-		/*
-		 * Collection<Part> list = request.getParts(); for (Part p : list) {
-		 * 
-		 * // 獲取上傳的檔名稱
-		 * 
-		 * String filename = p.getSubmittedFileName(); // 建立要儲存的檔案物件 File file = new
-		 * File(createDir(getServletContext()), createName(filename));
-		 * 
-		 * // 儲存檔案 p.write(file.getAbsolutePath());
-		 * System.out.printf("成功寫入圖片,絕對路徑:%s\n",file.getAbsoluteFile());
-		 * 
-		 * }
-		 */
-
-		// request.getRequestDispatcher("/NewMsg.jsp").forward(request, response);
-		// 導引回留言列
-
-		// getServletContext().getRequestDispatcher("/MsgPage.jsp").forward(request,
-		// response);
+		
+		String url = request.getContextPath()+ "/MsgPage.jsp";
+		String targetURL = response.encodeRedirectURL(url);
+		response.sendRedirect(targetURL);
 
 	}
 

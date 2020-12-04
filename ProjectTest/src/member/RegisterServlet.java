@@ -77,7 +77,7 @@ public class RegisterServlet extends HttpServlet {
 		birthyear = Integer.parseInt(request.getParameter("byear").trim());
 		birthmonth = Integer.parseInt(request.getParameter("bmonth").trim());
 		birthday = Integer.parseInt(request.getParameter("bday").trim());
-		acc = request.getParameter("acc").trim();
+		acc = request.getParameter("a\\cc").trim();
 		pwd = request.getParameter("pwd").trim();
 		phone = "";
 		email = request.getParameter("email").trim();

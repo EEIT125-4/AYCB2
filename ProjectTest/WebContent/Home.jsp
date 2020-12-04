@@ -5,10 +5,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<sql:setDataSource var="ds" dataSource="jdbc/EmployeeDB" />
-<sql:query sql="select distinct product_category from profinal" var="rs"
+<sql:setDataSource var="ds" dataSource="jdbc/AYCBDB" />
+<sql:query sql="select distinct product_category from product" var="rs"
 	dataSource="${ds}" />
-
+ 
 <!DOCTYPE html>
 <html>
 <head>

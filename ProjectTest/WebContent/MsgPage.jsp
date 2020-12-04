@@ -16,14 +16,14 @@ if (session.getAttribute("login_session") != null) {
 	String userName = member.getName();
 
 	System.out.println("msgPage got user" + userName);
-	if (member.getName().equals("Kevin")) {
+	
 		editable = true;
-	}
+	
 
 }
 
 String type = request.getParameter("type");
-String sql_type = (type != null && type != "") ? "msg_type like'" + type + "'" : "msg_type like '%%'";
+String sql_type = (type != null && type != "") ? "type like'" + type + "'" : "type like '%%'";
 System.out.println("sqltype:" + sql_type);
 String sql_count = (request.getParameter("count") != null && request.getParameter("count") != "")
 		? request.getParameter("count")
@@ -37,17 +37,17 @@ System.out.println("sqlsort:" + sql_sort);
 String sort = request.getParameter("sort");
 
 //String sql_word=(request.getParameter("word")!=null && request.getParameter("word")!="")?"and msg_desc like'%"+request.getParameter("word")+"%'":"and msg_desc like '%%'";
-String sql1="select "+sql_count+" * from message where "+sql_type+" order by msg_id "+sql_sort;
+String sql1="select "+sql_count+" * from message_table where "+sql_type+" order by id "+sql_sort;
 String word = request.getParameter("word");
 String sql_word = (word != null && word != "")
-		? " select*from message where msg_type like'%" + word + "%'" + " or msg_desc like'%" + word + "%'" + " or msg_title like '%" + word
-		+ "%'" + " or msg_date like '%" + word + "%'"
+		? " select*from message_table where type like'%" + word + "%'" + " or desc like'%" + word + "%'" + " or title like '%" + word
+		+ "%'" + " or date like '%" + word + "%'"
 		: "";
 
 System.out.println("sql_word:" + sql_word);
 %>
 
-<sql:setDataSource var="ds" dataSource="jdbc/EmployeeDB" />
+<sql:setDataSource var="ds" dataSource="jdbc/AYCB2" />
 
 <sql:query var="rss" dataSource="${ds}">
 
@@ -61,12 +61,12 @@ System.out.println("sql_word:" + sql_word);
 </sql:query>
 
 <%
-	String check = "select " + sql_count + " * from message where " + sql_type + sql_word + " order by msg_id " + sql_sort;
+	String check = "select " + sql_count + " * from message_table where " + sql_type + sql_word + " order by id " + sql_sort;
 System.out.println("check:" + check);
 %>
 
 <sql:query var="types" dataSource="${ds}"
-	sql="select distinct msg_type from message" />
+	sql="select distinct type from message_table" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +97,7 @@ System.out.println("check:" + check);
 					<option value="">All</option>
 					<%--disabled selected hidden --%>
 					<c:forEach var="type" items="${types.rows}">
-						<option value="${type.msg_type}">${type.msg_type}</option>
+						<option value="${type.type}">${type.type}</option>
 
 					</c:forEach>
 			</select></li>
@@ -136,10 +136,10 @@ System.out.println("check:" + check);
 			<article class="article">
 
 
-				<h1 name="title" class="t1">${row.msg_title}</h1>
-				<h2 name="type" class="t2">${row.msg_type}</h2>
+				<h1 name="title" class="t1">${row.title}</h1>
+				<h2 name="type" class="t2">${row.type}</h2>
 
-				<input type="hidden" name="msg_id" value="${row.msg_id}"> <input
+				<input type="hidden" name="msg_id" value="${row.id}"> <input
 					class="editbtn" type=<%=(editable) ? "submit" : "hidden"%>
 					name="submit" value="edit"> <input class="editbtn"
 					type=<%=(editable) ? "submit" : "hidden"%> name="submit"
@@ -148,17 +148,17 @@ System.out.println("check:" + check);
 					value="我要留言" ><%--onclick="replyClick()" --%>
 
 				<figure class="msgfigure">
-					<img class="img1" alt="圖片待補" title="${row.msg_title} "
+					<img class="img1" alt="圖片待補" title="${row.title} "
 						onerror="javascript:this.src='./image/noImage.jpg'" loading="lazy"
-						src="${row.msg_imgpath}" />
-					<figcaption class="msgfigcaption">${row.msg_title}</figcaption>
+						src="${row.imgpath}" />
+					<figcaption class="msgfigcaption">${row.title}</figcaption>
 				</figure>
 				<p class="msgp">${row.msg_id}</p>
 				<p class="msgp">
-					<textarea class="editable" name=title disabled>${row.msg_desc}</textarea>
+					<textarea class="editable" name=title disabled>${row.desc}</textarea>
 				</p>
 
-				<p>${row.msg_imgpath }</p>
+				<p>${row.imgpath }</p>
 				<p>會員回覆列</p>
 
 
