@@ -3,9 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
  <!-- c核心 http://java.sun.com/jsp/jstl/sql標準寫法 -->
-<sql:setDataSource var="ds" dataSource="jdbc/EmployeeDB" />
-<!-- ds定義是dataSource -->
-<sql:query sql="select * from comment"  var="comment" dataSource="${ds}" />   
+<%-- <sql:setDataSource var="ds" dataSource="jdbc/EmployeeDB" /> --%>
+ <!-- ds定義是dataSource -->
+<%-- <sql:query sql="select * from comment"  var="comment" dataSource="${ds}" />    --%>
     
 <!DOCTYPE html>
 <html>
