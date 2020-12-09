@@ -20,7 +20,7 @@ if(session.getAttribute("login_session")!=null){
 
 <sql:query var="rs1" dataSource="${ds}" >
 
-select * from orders_item where customer_id = '<%=user%>';
+select * from orders_item where customerId = '<%=user%>';
 
 </sql:query>   
 <%
@@ -35,9 +35,9 @@ response.setDateHeader ("Expires", -1); // Prevents caching at the proxy server
  <form action="HistoryServlet" method="POST">
 	<h3>查詢交易歷史清單</h3>
   <table style="margin: auto;" border="1" >
-    <th>order_No</th>
-    <th>customer_id</th>
-    <th>order_time</th>
+    <th>orderNo</th>
+    <th>customerId</th>
+    <th>orderTime</th>
     <th>price</th>
     <th>quantity</th>
     <th>status</th>
@@ -46,14 +46,14 @@ response.setDateHeader ("Expires", -1); // Prevents caching at the proxy server
     <c:forEach var="row" items="${rs1.rows}">
     <!-- row一筆資料 -->
     <tr>
-    <td style="text-align:center;">${row.order_No}</td>
-    <td style="text-align:center;">${row.customer_id}</td>
-    <td style="text-align:center;">${row.order_time}</td>
+    <td style="text-align:center;">${row.orderNo}</td>
+    <td style="text-align:center;">${row.customerId}</td>
+    <td style="text-align:center;">${row.orderTime}</td>
     <td style="text-align:center;">${row.price}</td>
     <td style="text-align:center;">${row.quantity}</td>
     <td style="text-align:center;">${row.status}</td>
-    <td style="text-align:center;"><button style="width:auto;height:auto;margin-top: 0px;" name="update" value="${row.order_No}">更新</button></td>
-    <td style="text-align:center;"><button style="width:auto;height:auto;margin-top: 0px;" name="delete" value="${row.order_No}">刪除</button></td>
+    <td style="text-align:center;"><button style="width:auto;height:auto;margin-top: 0px;" name="update" value="${row.orderNo}">更新</button></td>
+    <td style="text-align:center;"><button style="width:auto;height:auto;margin-top: 0px;" name="delete" value="${row.orderNo}">刪除</button></td>
     </tr>
     </c:forEach>
   </table>

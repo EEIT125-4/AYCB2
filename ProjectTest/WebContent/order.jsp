@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"  import="java.util.*,product.*"  %>
+    pageEncoding="UTF-8"  import="java.util.*,product.*,product.cartModel.CartItem"  %>
 <%
 response.setContentType("text/html;charset=UTF-8");
 response.setHeader("Cache-Control","no-cache"); // HTTP 1.1
@@ -58,9 +58,9 @@ response.setDateHeader ("Expires", -1); // Prevents caching at the proxy server
             <form name="removeForm" action="ControllerServlet" method="POST">
                <input type="hidden" name="todo" value="remove"><!-- 移除商品 -->
                <input type="hidden" name="cartIndex" value="<%= i %>">
-               <td align="right"><img class="img" src="image/<%=aCartItem.getProduct_Name()%>.png"></td>
-               <td align="left"><%= aCartItem.getProduct_Name() %></td>
-               <td align="right" valign="middle">$<%= aCartItem.getProduct_Price() %></td>
+               <td align="right"><img class="img" src="image/<%=aCartItem.getProductName()%>.png"></td>
+               <td align="left"><%= aCartItem.getProductName() %></td>
+               <td align="right" valign="middle">$<%= aCartItem.getProductPrice() %></td>
                <td align="right"><%= aCartItem.getQtyOrdered() %></td>                             
                <td><input style="margin-bottom: 6px;" type="button" value="追蹤"><br><input type="submit" value="刪除"></td>
             </form>

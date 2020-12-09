@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"  import="java.util.*, product.*"  %>
+    pageEncoding="UTF-8"  import="java.util.*, product.*, product.cartModel.CartItem"  %>
 <%
 response.setContentType("text/html;charset=UTF-8");
 response.setHeader("Cache-Control","no-cache"); // HTTP 1.1
@@ -28,13 +28,13 @@ response.setDateHeader ("Expires", -1); // Prevents caching at the proxy server
          </tr>
          <%
          // Scriptlet 1: Display the items in shopping cart
-         List<CartItem> theCart = (List<CartItem>) session.getAttribute("cart");
+         List<CartItem> theCart = (ArrayList<CartItem>) session.getAttribute("cart");
          for (CartItem item : theCart) {
          %>
          <tr>
-            <td align="right" valign="middle"><img class="img" src="image/<%=item.getProduct_Name()%>.png"></td>
-            <td align="left" valign="middle"><%= item.getProduct_Name()%></td>
-            <td align="right">$<%= item.getProduct_Price()%></td>
+            <td align="right" valign="middle"><img class="img" src="image/<%=item.getProductName()%>.png"></td>
+            <td align="left" valign="middle"><%= item.getProductName()%></td>
+            <td align="right">$<%= item.getProductPrice()%></td>
             <td align="right"><%= item.getQtyOrdered()%></td>
            
          </tr>

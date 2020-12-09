@@ -11,21 +11,21 @@
 %>
 <%@include file="jspf/header.jspf"%>
 
-<jsp:useBean id="bean" class="product.OrderBean" scope="session" />
+<jsp:useBean id="bean" class="product.cartModel.OrderBean" scope="session" />
 <fieldset style="margin: auto;position: relative;top: 200px;width: 300px;border-radius: 15px;font-weight: 300;font-size: large">
 	<legend style="font-weight: 600;font-size: x-large;text-align: center;">訂單修改</legend>
 	<form  action="HistoryServlet" method="post">
         <p>  
-            <label class="t1" for="">order_No:</label>
-            <input type="text" name="order_No" value="<jsp:getProperty name="bean" property="order_No"/>" readonly>   
+            <label class="t1" for="">orderNo:</label>
+            <input type="text" name="orderNo" value="<jsp:getProperty name="bean" property="orderNo"/>" readonly>   
         </p>
         <p>   
-            <label for="" class="t1">customer_Id:</label>
-            <input type="text" name="customer_Id" value="<jsp:getProperty name="bean" property="customer_Id"/>" readonly>     
+            <label for="" class="t1">customerId:</label>
+            <input type="text" name="customerId" value="<jsp:getProperty name="bean" property="customerId"/>" readonly>     
         </p>
         <p>
-            <label for="" class="t1">order_time:</label>
-            <input type="text" name="order_time" value="<jsp:getProperty name="bean" property="order_time"/>" readonly>
+            <label for="" class="t1">orderTime:</label>
+            <input type="text" name="orderTime" value="<jsp:getProperty name="bean" property="orderTime"/>" readonly>
         </p>
         <p>
             <label for="" class="t1">price:</label>
