@@ -33,8 +33,8 @@ public class OrderInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String CONTENT_TYPE = "text/html; charset=UTF-8";   
 	
-	DataSource ds = null;
-	Connection conn= null;
+//	DataSource ds = null;
+//	Connection conn= null;
     
 
     public OrderInsertServlet() {
@@ -43,19 +43,19 @@ public class OrderInsertServlet extends HttpServlet {
     }
 
 	
-	public void init(ServletConfig config) throws ServletException {
-		
-		try {
-			InitialContext ctxt = new InitialContext();
-			ds=(DataSource)ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
-			
-		} catch (NamingException e) {
-			
-			e.printStackTrace();
-			throw new ServletException(e);
-		}
-    	
-    }
+//	public void init(ServletConfig config) throws ServletException {
+//		
+//		try {
+//			InitialContext ctxt = new InitialContext();
+//			ds=(DataSource)ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
+//			
+//		} catch (NamingException e) {
+//			
+//			e.printStackTrace();
+//			throw new ServletException(e);
+//		}
+//    	
+//    }
 	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,11 +69,7 @@ public class OrderInsertServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8"); 
 		response.setContentType(CONTENT_TYPE);
 		PrintWriter out = response.getWriter();
-			
-		try (
-			Connection conn = ds.getConnection();			
-		) {
-						
+					
 			OrderService os = new OrderServiceImpl();
 			
 			
@@ -98,10 +94,7 @@ public class OrderInsertServlet extends HttpServlet {
 			response.setHeader("Refresh","0.5;commit.jsp");
 			request.getSession(true).removeAttribute("cart");//移除session	
 
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}	
+		
 		
 //		ServletContext servletContext = getServletContext();
 //		RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/commit.jsp");

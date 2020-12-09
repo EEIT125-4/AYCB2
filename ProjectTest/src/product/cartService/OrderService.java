@@ -3,6 +3,7 @@ package product.cartService;
 import java.util.List;
 
 import product.cartModel.OrderBean;
+import product.cartModel.ProductDB;
 
 public interface OrderService {
 
@@ -15,5 +16,7 @@ public interface OrderService {
 	boolean deleteOrderitem(int no);
 
 	OrderBean selectUpdateitem(int ino);
+	
+	ProductDB getProductDB();
 
 }

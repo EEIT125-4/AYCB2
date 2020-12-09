@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
+
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,12 +13,37 @@ import org.hibernate.query.Query;
 
 import product.cartDao.OrderDao;
 import product.cartModel.OrderBean;
+import product.cartModel.ProductDB;
 import product.utils.HibernateUtils;
 
 public class OrderDaoImpl implements OrderDao {
 
 	SessionFactory factory = HibernateUtils.getSessionFactory();
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProductDB getProductDB() {
 
+		  Session session = factory.getCurrentSession();
+		  
+		  String Hql = "SELECT p.productName FROM profinal p ";
+		  String Hql2 = "SELECT p.productPrice FROM profinal p ";
+		  List<String> nameList = new ArrayList<String>();
+		  List<Integer> priceList = new ArrayList<Integer>();
+		  ProductDB PD = new ProductDB();
+		  
+		  
+		  Query<String> query = session.createQuery(Hql);
+		  nameList = query.getResultList();
+		  Query<Integer> query1 = session.createQuery(Hql2);
+		  priceList = query1.getResultList();
+		       
+		  PD.setProductName((String[]) nameList.toArray(new String[0]));
+		  PD.setProductPrice((Integer[]) priceList.toArray(new Integer[0]));
+		
+		return PD;		
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<OrderBean> selectOrderitem(String name) {

@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import product.cartDao.OrderDao;
 import product.cartDao.impl.OrderDaoImpl;
 import product.cartModel.OrderBean;
+import product.cartModel.ProductDB;
 import product.cartService.OrderService;
 import product.utils.HibernateUtils;
 
@@ -20,7 +21,20 @@ public class OrderServiceImpl implements OrderService {
 	SessionFactory factory = HibernateUtils.getSessionFactory();
 	OrderDao dao = new OrderDaoImpl();
 	
-	
+	public ProductDB getProductDB() {
+		  ProductDB PD =null;
+		  Session session = factory.getCurrentSession();
+		  Transaction tx = null;
+		  
+		  try {
+		   tx = session.beginTransaction();
+		   PD=dao.getProductDB();
+		   tx.commit();
+		  } catch (Exception e) {
+
+		  }
+		  return PD;
+		 }
 	
 	
 	@Override

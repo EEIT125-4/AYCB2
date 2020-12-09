@@ -36,31 +36,31 @@ public class HistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-	DataSource ds = null;
-	Connection conn = null;
-
-	InitialContext ctxt = null;
+//	DataSource ds = null;
+//	Connection conn = null;
+//
+//	InitialContext ctxt = null;
 
 	public HistoryServlet() {
 		super();
 	}
 
-	@Override
-	public void init() throws ServletException {
-
-		try {
-			ctxt = new InitialContext();
-			ds = (DataSource) ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
-			conn = ds.getConnection();
-		} catch (NamingException e) {
-
-			throw new ServletException(e);
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-	}
+//	@Override
+//	public void init() throws ServletException {
+//
+//		try {
+//			ctxt = new InitialContext();
+//			ds = (DataSource) ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
+//			conn = ds.getConnection();
+//		} catch (NamingException e) {
+//
+//			throw new ServletException(e);
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -83,9 +83,7 @@ public class HistoryServlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("delete process");
 
-		try (Connection conn = ds.getConnection();
-
-		) {
+		
 
 			String pno = request.getParameter("delete");
 			System.out.println("pno" + pno);
@@ -96,12 +94,7 @@ public class HistoryServlet extends HttpServlet {
 				
 				System.out.println("Get order SQL delete done!");
 			}
-			
-		} catch (SQLException e) {
-			System.out.println("error");
-
-			e.printStackTrace();
-		}
+	
 
 		request.getRequestDispatcher("/historyOrders.jsp").forward(request, response);
 	}
@@ -110,7 +103,6 @@ public class HistoryServlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("Pack process");
 
-		try (Connection conn = ds.getConnection();) {
 
 			String pno = request.getParameter("update");
 			System.out.println("pno" + pno);
@@ -122,11 +114,7 @@ public class HistoryServlet extends HttpServlet {
 
 			request.getSession(true).setAttribute("bean", bean);
 
-		} catch (SQLException e) {
-			System.out.println("error");
-
-			e.printStackTrace();
-		}
+	
 
 		request.getRequestDispatcher("/updateOrder.jsp").forward(request, response);
 	}
@@ -134,7 +122,7 @@ public class HistoryServlet extends HttpServlet {
 	protected void UpdateProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		try (Connection conn = ds.getConnection();) {
+	
 
 			int orderNo = Integer.parseInt(request.getParameter("order_No"));
 			
@@ -160,11 +148,7 @@ public class HistoryServlet extends HttpServlet {
 				System.out.println("Get order SQL update done!");
 			}
 
-		} catch (SQLException e) {
-			System.out.println("error");
-
-			e.printStackTrace();
-		}
+	
 
 		request.getRequestDispatcher("/historyOrders.jsp").forward(request, response);
 	}

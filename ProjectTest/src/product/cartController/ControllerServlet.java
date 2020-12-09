@@ -16,6 +16,8 @@ import javax.sql.DataSource;
 
 import product.cartModel.CartItem;
 import product.cartModel.ProductDB;
+import product.cartService.OrderService;
+import product.cartService.impl.OrderServiceImpl;
 
 
 
@@ -23,7 +25,7 @@ import product.cartModel.ProductDB;
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	DataSource ds;
+//	DataSource ds;
 	
 	ProductDB db;
   
@@ -32,58 +34,60 @@ public class ControllerServlet extends HttpServlet {
 		
 		super.init(config);
 		
-		if(db==null) {
-			
-			db=new ProductDB();
-
-			try {//JNDI
-			      
-			      InitialContext ctx = new InitialContext();
-			      
-			      ds = (DataSource)ctx.lookup("java:comp/env/jdbc/EmployeeDB");
-			      if (ds == null)
-			         throw new ServletException("Unknown DataSource 'jdbc/EmployeeDB'");
-			  } catch (NamingException ex) {
-			      ex.printStackTrace();
-			  }
-			
-			  Connection conn = null;
-		      Statement  stmt = null;
+		OrderService os = new OrderServiceImpl();
+		
+		db = os.getProductDB();
+		
+//		if(db==null) {
+//			
+//			db=new ProductDB();
+//
+//			try {//JNDI
+//			      
+//			      InitialContext ctx = new InitialContext();
+//			      
+//			      ds = (DataSource)ctx.lookup("java:comp/env/jdbc/EmployeeDB");
+//			      if (ds == null)
+//			         throw new ServletException("Unknown DataSource 'jdbc/EmployeeDB'");
+//			  } catch (NamingException ex) {
+//			      ex.printStackTrace();
+//			  }
+//			
+//			  Connection conn = null;
+//		      Statement  stmt = null;
 		    
 		    
-		    List <String> nameList =  new  ArrayList <String> () ;
-		    List <Integer> priceList = new  ArrayList <Integer> ();
-		    
-		    try {
-		       	      
-		       conn = ds.getConnection();
-		       stmt = conn.createStatement();
-		       ResultSet rset = stmt.executeQuery("select productName, productPrice from profinal");
-		      
-		       while(rset.next()) {        	 
-		    	   nameList.add(rset.getString("productName"));//add資料新增
-		    	   priceList.add(rset.getInt("productPrice"));
-		       }
-		       
-		       ProductDB.setProductName((String[]) nameList.toArray(new String[0]));//List轉成字串陣列,new String[0])制式寫法
-		       ProductDB.setProductPrice((Integer[]) priceList.toArray(new Integer[0]));
-		       //classDB的class方法
-		    } catch (SQLException ex) {
-		       ex.printStackTrace();
-		    } finally {
-		 
-		       try {
-		          if (stmt != null) stmt.close();
-		          if (conn != null) conn.close();
-		       } catch (SQLException ex) {
-		           ex.printStackTrace();
-		       }
-		    }
-		}
+//		    List <String> nameList =  new  ArrayList <String> () ;
+//		    List <Integer> priceList = new  ArrayList <Integer> ();
+//		    
+//		    try {
+//		       	      
+//		       conn = ds.getConnection();
+//		       stmt = conn.createStatement();
+//		       ResultSet rset = stmt.executeQuery("select productName, productPrice from profinal");
+//		      
+//		       while(rset.next()) {        	 
+//		    	   nameList.add(rset.getString("productName"));//add資料新增
+//		    	   priceList.add(rset.getInt("productPrice"));
+//		       }
+//		       
+//		       ProductDB.setProductName((String[]) nameList.toArray(new String[0]));//List轉成字串陣列,new String[0])制式寫法
+//		       ProductDB.setProductPrice((Integer[]) priceList.toArray(new Integer[0]));
+//		       //classDB的class方法
+//		    } catch (SQLException ex) {
+//		       ex.printStackTrace();
+//		    } finally {
+//		 
+//		       try {
+//		          if (stmt != null) stmt.close();
+//		          if (conn != null) conn.close();
+//		       } catch (SQLException ex) {
+//		           ex.printStackTrace();
+//		       }
+//		    }
+//		}
 	
 	}	
-	
-	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
