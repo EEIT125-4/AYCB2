@@ -40,7 +40,7 @@ String sort = request.getParameter("sort");
 String sql1="select "+sql_count+" * from message_table where "+sql_type+" order by id "+sql_sort;
 String word = request.getParameter("word");
 String sql_word = (word != null && word != "")
-		? " select*from message_table where type like'%" + word + "%'" + " or desc like'%" + word + "%'" + " or title like '%" + word
+		? " select*from message_table where type like'%" + word + "%'" + " or content like'%" + word + "%'" + " or title like '%" + word
 		+ "%'" + " or date like '%" + word + "%'"
 		: "";
 
@@ -155,7 +155,7 @@ System.out.println("check:" + check);
 				</figure>
 				<p class="msgp">${row.msg_id}</p>
 				<p class="msgp">
-					<textarea class="editable" name=title disabled>${row.desc}</textarea>
+					<textarea class="editable" name=title disabled>${row.content}</textarea>
 				</p>
 
 				<p>${row.imgpath }</p>
@@ -202,23 +202,12 @@ System.out.println("check:" + check);
 
 	}
 	
-      /*function replyClick() {
-  		
-  		
-  		
-  		alert("reply");
-  		
-  		let temp=document.getElementById("left");
-  		
-  		temp.append("<div>FFFFFFFF</div>");
-  		//$(this).append('<div>FFFFFFFF</div>');
-  	}*/
-
-
-
-	
 
 	$(document).ready(function(){
+		
+		
+		
+		
 	    var type = document.getElementById('type');
 		var sort = document.getElementById('sort');
 		var count = document.getElementById('count');

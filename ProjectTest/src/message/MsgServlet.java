@@ -4,16 +4,22 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 //import javax.rmi.*;
 import javax.naming.*;
 import javax.sql.*;
-import message.MsgBean;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
 import tool.Common;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import message.model.MessageBean;
 import message.service.MessageService;
@@ -104,10 +111,11 @@ public class MsgServlet extends HttpServlet {
 
 		System.out.println("in delete process");
 		String msg_id = request.getParameter("msg_id");
-		try {
-			MsgDAO dao = new MsgDAO();
 
-			if (dao.deleteMsg(msg_id)) {
+		try {
+			
+			MessageService ms=new MessageServiceImpl();	
+			if (ms.deleteMessage(msg_id)==1) {
 				System.out.println("刪除成功");
 
 			} else {
@@ -126,103 +134,113 @@ public class MsgServlet extends HttpServlet {
 
 	}
 
-	public void gotoUpdateProcess(HttpServletRequest request, HttpServletResponse response) {
+	public void gotoUpdateProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 		System.out.println("in update process");
 
 		String msg_id = request.getParameter("id");
 		String msg_title = request.getParameter("title").trim();
-		String msg_desc = request.getParameter("desc").trim();
+		String msg_content = request.getParameter("desc").trim();
 		String msg_type = request.getParameter("type").trim();
 		String msg_path = request.getParameter("path");
 
+		Part part = request.getPart("file");
+
+		MessageService ms =new MessageServiceImpl();
+		boolean success = false;
+
 		try {
 
-			MsgDAO msgDAO = new MsgDAO();
-			if (request.getPart("file") != null)
+			// 如果存在檔案,表示圖片有更新,嘗試把舊圖片刪除
+			if (part != null && part.getSize()>0) {
 
-			{
-				// 注意,這裡是專案下絕對路徑..
-				if (msg_path != null && !msg_path.equals("")) {
-					System.out.println("msg_path:" + msg_path);
-					String path = msg_path.substring(msg_path.lastIndexOf("/"));
-					path = "C:\\Users\\user\\eclipse-workspace\\AYCB\\WebContent\\myProject\\upload" + path;
-					System.out.println("是否存在檔案?" + new File(path).exists());
+				File oldFile = new File(Common.getImgRealPath(msg_path));
+				if (oldFile.exists()) {
+					System.out.println("存在舊檔案,路徑為:" + oldFile.getAbsolutePath());
+					if (Common.deleteFile(Common.getImgRealPath(msg_path))) {
 
-					if (Common.deleteFile(path)) {
-
-						System.out.println("delete file:" + path);
+						System.out.println("delete file:" + msg_path);
+						System.out.println("刪除舊圖檔成功");
 					} else {
-						System.out.println("fail to delete file:" + path);
+						System.out.println("fail to delete file:" + msg_path);
+						System.out.println("刪除舊圖檔失敗");
 					}
-				}
-			}
-			// 此建構式會判斷request下有沒有檔案,有的話會刪除舊檔並設置新檔案路徑到bean中
-			MsgBean updateData = new MsgBean(msg_id, msg_title, msg_desc, msg_type, request);
 
-			if (msgDAO.updateMsg(updateData)) {
-				System.out.println("更新成功");
-				response.sendRedirect("./MsgPage.jsp");
+					msg_path = Common.saveImage(part);
+				}
+
+				// 圖片實際路徑轉換
 
 			} else {
-				System.err.println("更新失敗");
+				System.out.println("沒有舊檔案");
 			}
+			MessageBean mb = ms.getMessage(msg_id);
+			mb.setMsg_title(msg_title);
+			mb.setMsg_desc(msg_content);
+			mb.setMsg_type(msg_type);
+			mb.setMsg_imgpath(msg_path);
+			mb.setEditDate(new java.sql.Date(new Date().getTime()));
+
+			if (ms.updateMessage(mb) == 1) {
+				success = true;
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("sth error");
+
 		}
+		String targetURL = "";
 
-		// 先把舊圖片刪除
+		String url = request.getContextPath() + "/MsgPage.jsp";
+		url = response.encodeRedirectURL(url);
+		response.sendRedirect(url);
+		if (success) {
 
-		/*
-		 * String path = msgData.getMsg_imgpath(); if (path != null || !path.equals(""))
-		 * {
-		 * 
-		 * if (deleteFile(path)) { System.out.println("成功刪除舊檔案"); } else {
-		 * System.out.println("刪除舊檔失敗"); } ;
-		 * 
-		 * }
-		 */
+		} else {
+
+		}
 
 	}
 
-	public void gotoEditProcess(HttpServletRequest request, HttpServletResponse response) {
+	public void gotoEditProcess(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 
 		// 邏輯是根據id名稱設定session bean,然後帶去NewMsg.jsp頁面,如果有bean執行A,否執行B
+		String id = request.getParameter("msg_id");
 
-		try {
-			MsgBean msgBean = null;
-			MessageService ms=new MessageServiceImpl();
-			
-			MsgDAO dao = new MsgDAO();
+		MessageService ms = new MessageServiceImpl();
+		boolean success = false;
+		String editUrl = request.getContextPath() + "/NewPage.jsp";
+		String url = request.getContextPath() + "/MsgPage.jsp";
 
-			String sql = ("select *from message where msg_id=") + "'" + request.getParameter("msg_id") + "'";
-			System.out.println(sql);
-			ResultSet rs = dao.getResultSet(sql);
-
-			
-			while (rs.next()) {
-				// 產生一個bean
-				msgBean = new MsgBean(rs);
-
-			}
-			System.out.println("path" + msgBean.getMsg_imgpath());
-			// 設定正要編輯的bean
-			// request.getSession(true).setAttribute("edit_msg",msgBean);
-			request.setAttribute("edit_msg", msgBean);
-			request.getRequestDispatcher("/NewMsg.jsp").forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("error when create bean");
+		if (ms.isDup(id)) {// 如果查詢的物件存在
 			try {
-				response.sendError(400, "error when create bean");
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				MessageBean mb = ms.getMessage(id);
+				request.setAttribute("edit_msg", mb);
+				request.getRequestDispatcher("/NewMsg.jsp").forward(request, response);
+				success = true;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("error when create bean");
+
+			}
+			String targetURL = "";
+
+			if (success) {
+				targetURL = response.encodeRedirectURL(editUrl);
+				response.sendRedirect(targetURL);
+
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher(url);
+				rd.forward(request, response);
+
 			}
 
-		}
+		} else {
 
+			System.out.println("不存在");
+		}
 	}
 
 	public void gotoSubmitProcess(HttpServletRequest request, HttpServletResponse response)
@@ -232,41 +250,53 @@ public class MsgServlet extends HttpServlet {
 		// 若rs=null,創建日期流水編第一筆
 		// 若rs!=null,編號為日期+(目前筆數+1)
 		System.out.println("in subit process");
-		
+
 		try {
-			
+
 			// 取得submit過來的資料
 			String msg_title = request.getParameter("title").trim();
 			String msg_desc = request.getParameter("desc").trim();
 			System.out.println("textArea:" + msg_desc);
 			String msg_type = request.getParameter("type").trim();
+			String msg_imgPath = "";
 			// 以JAVADATE取得今天日期的long,再轉為SQLDATE
 			java.sql.Date msg_date = new java.sql.Date(new Date().getTime());
-			MsgBean msgBean = new MsgBean("", msg_title, msg_desc, msg_type, msg_date);
+			Part part = request.getPart("file");
+			if (part != null &&part.getSize()>0) {// 如果有傳檔案過來
+				msg_imgPath = Common.saveImage(part);
+			}else {
+				System.out.println("沒有圖片");
+			}
 
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-			String sqlCondition = f.format(msgBean.getMsg_date());
-			System.out.println(sqlCondition);
-			MessageBean mb=new MessageBean(msg_title, msg_desc, msg_type,"", msg_date);
+			MessageBean mb = new MessageBean(msg_title, msg_desc, msg_type, msg_imgPath, msg_date);
 			
-			MessageService ms=new MessageServiceImpl();
-			HttpSession session=request.getSession();
+			MessageService ms = new MessageServiceImpl();
 			ms.save(mb);
-					
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("上傳過程發生異常");
-			RequestDispatcher rd = request.getRequestDispatcher("/NewMsg.jsp");
-			rd.forward(request,response);
+			String url = request.getContextPath() + "/MsgPage.jsp";
+			String targetURL = response.encodeRedirectURL(url);
+			response.sendRedirect(targetURL);
+			/*RequestDispatcher rd = request.getRequestDispatcher("MsgPage.jsp");
+			rd.forward(request, response);*/
 			return;
-			
-			
+
 		}
-		
-		String url = request.getContextPath()+ "/MsgPage.jsp";
+
+		String url = request.getContextPath() + "/MsgPage.jsp";
 		String targetURL = response.encodeRedirectURL(url);
 		response.sendRedirect(targetURL);
 
 	}
+
+//	private MessageService getMessageService() {
+//
+//		ServletContext sc = getServletContext();
+//		WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(sc);
+//		return ctx.getBean(MessageService.class);
+//
+//	}
 
 }

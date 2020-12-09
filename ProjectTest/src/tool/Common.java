@@ -16,7 +16,7 @@ public  class Common {
 	}
 	
 
-	public static String UPLOAD_PATH="C:/iii/Java/JavaWebWorkspace/ProjectTest/WebContent/upload";
+	public static String UPLOAD_PATH="C:/Users/user/git/AYCB2/ProjectTest/WebContent/upload/";//"C:/iii/Java/JavaWebWorkspace/ProjectTest/WebContent/upload";
 	//public static String uPLOAD_DIR="C:/iii/Java/JavaWebWorkspace/ProjectTest/WebContent/upload";
 			
 	public static boolean deleteFile(String path) {

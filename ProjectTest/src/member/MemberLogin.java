@@ -52,13 +52,13 @@ public class MemberLogin extends HttpServlet {
 
 		try {
 			ctxt = new InitialContext();
-			ds = (DataSource) ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
+			ds = (DataSource) ctxt.lookup("java:comp/env/jdbc/AYCB2");
 			conn = ds.getConnection();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 			Statement statement = conn.createStatement();
 			System.out.println("連結資料庫");
-			ResultSet rs = statement.executeQuery("select*from member");
+			ResultSet rs = statement.executeQuery("select*from member_table");
 			String name = null;
 			String account = null;
 			String password = null;
@@ -70,8 +70,8 @@ public class MemberLogin extends HttpServlet {
 
 			while (rs.next()) {
 				name = rs.getString("name");
-				account = rs.getString("accout_id");
-				password = rs.getString("password");
+				account = rs.getString("id");
+				password = rs.getString("pwd");
 				address = rs.getString("address");
 				phone = rs.getString("phone");
 				birth = rs.getDate("birth");

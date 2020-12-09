@@ -7,16 +7,12 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import message.dao.MessageDao;
 import message.model.MessageBean;
 import tool.HibernateUtils;
 
-
-
-//¹ê§@¤¶­±©ÎÄ~©Ó¤÷Ãþ§O,µ{¦¡¨Ï¥Î®Éª½±µ¼g¤÷Ãþ§O/¤¶­±¦WºÙ
 public class MessageHibernateDaoImpl implements MessageDao {
 
 	SessionFactory factory = HibernateUtils.getSessionFactory();
@@ -36,36 +32,35 @@ public class MessageHibernateDaoImpl implements MessageDao {
 
 		return result;
 	}
+
 	/**
-	 * ÅÞ¿è¬O§ì¥X¤é´Á¬°¤µ¤Ñªº°T®§¦³´Xµ§,¦³¤@µ§¥H¤W´N¨ú³Ì¤j½s½X©¹¤U
+	 * è‡ªè¨‚ç·¨è™Ÿæ–¹æ³•
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getNewId(Date date) {
-		
+
 		String hql = "FROM MessageBean m WHERE m.date = :today order by m.id";
 		Session session = factory.getCurrentSession();
 
 		Query<MessageBean> query = session.createQuery(hql);
 		List<MessageBean> list = query.setParameter("today", date).getResultList();
-		
+
 		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
 		String tempID = f.format(date);
-			
-		if (list.size() > 0) {//¦pªG¦³¸ê®Æ
-			Integer index=Integer.parseInt(list.get(list.size()-1).getMsg_id().substring(8))+1;
-			tempID+=index;
-			
-			System.out.println("¦³¸ê®Æ:"+tempID);
 
-		}else {
-			tempID+="001";
-			System.out.println("µL¸ê®Æ:"+tempID);
+		if (list.size() > 0) {// å¦‚æžœä»Šå¤©å·²ç¶“æœ‰è³‡æ–™
+			Integer index = Integer.parseInt(list.get(list.size() - 1).getMsg_id().substring(8)) + 1;
+			tempID += String.format("%03d", index);
+			System.out.println("tempID:" + tempID);
+
+		} else {
+			tempID += "001";
+			System.out.println("tempID:" + tempID);
 		}
-		System.out.println("result:"+tempID);
+		System.out.println("result:" + tempID);
 		return tempID;
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -82,8 +77,8 @@ public class MessageHibernateDaoImpl implements MessageDao {
 
 	@Override
 	public int save(MessageBean mb) {
-		Date d=mb.getMsg_Date();
-		String newID=this.getNewId(d);
+		Date d = mb.getMsg_Date();
+		String newID = this.getNewId(d);
 		mb.setMsg_id(newID);
 		int count = 0;
 		Session session = factory.getCurrentSession();
@@ -95,12 +90,12 @@ public class MessageHibernateDaoImpl implements MessageDao {
 	}
 
 	@Override
-	public MessageBean getMessage(int id) {
+	public MessageBean getMessage(String pk) {
 
 		MessageBean mb = null;
 		Session session = factory.getCurrentSession();
 
-		mb = session.get(MessageBean.class, id);
+		mb = session.get(MessageBean.class, pk);
 
 		return mb;
 
@@ -116,7 +111,7 @@ public class MessageHibernateDaoImpl implements MessageDao {
 		count++;
 
 		return count;
-		
+
 	}
 
 	@Override
@@ -127,5 +122,17 @@ public class MessageHibernateDaoImpl implements MessageDao {
 		count++;
 
 		return count;
+	}
+
+	@Override
+	public List<MessageBean> queryMessage(String sql) {
+		List<MessageBean> list = new ArrayList<>();
+		String hql = "FROM MessageBean";
+		Session session = factory.getCurrentSession();
+
+		Query<MessageBean> query = session.createQuery(hql);
+		list = query.getResultList();
+
+		return list;
 	}
 }

@@ -1,3 +1,4 @@
+<%@page import="message.model.MessageBean"%>
 <%@page import="message.*"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.ResultSetMetaData"%>
@@ -6,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%><!-- 標準寫法,詳細參考網站https://www.javatpoint.com/jstl-sql-setdatasource-tag -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-	MsgBean editBean = (MsgBean) request.getAttribute("edit_msg");
+	MessageBean editBean = (MessageBean) request.getAttribute("edit_msg");
 	if(editBean!=null){
 		System.out.println("editBean:"+editBean.getMsg_imgpath());
 		}else{

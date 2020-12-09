@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import message.dao.MessageDao;
 import message.dao.impl.MessageHibernateDaoImpl;
@@ -15,10 +17,14 @@ import tool.HibernateUtils;
 
 
 
+@Service
 public class MessageServiceImpl implements MessageService {
-
+	@Autowired
 	SessionFactory factory = HibernateUtils.getSessionFactory();
-	MessageDao dao = new MessageHibernateDaoImpl();
+	@Autowired
+	MessageDao dao= new MessageHibernateDaoImpl();
+	
+	
 	
 	@Override
 	public boolean isDup(String id) {
@@ -37,6 +43,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 		return result;	
 	}
+
 
 	@Override
 	public int save(MessageBean mb) {
@@ -75,8 +82,9 @@ public class MessageServiceImpl implements MessageService {
 		return list;
 	}
 
+
 	@Override
-	public MessageBean getMessage(int id) {
+	public MessageBean getMessage(String id) {
 		MessageBean mb = null;
 		Session session = factory.getCurrentSession();
 		Transaction tx = null;
@@ -92,6 +100,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 		return mb;
 	}
+
 
 	@Override
 	public int deleteMessage(String id) {
@@ -112,6 +121,7 @@ public class MessageServiceImpl implements MessageService {
 		return count;
 	}
 
+
 	@Override
 	public int updateMessage(MessageBean mb) {
 		int count = 0;
@@ -130,4 +140,25 @@ public class MessageServiceImpl implements MessageService {
 		}	
 		return count;
 	}
+
+
+	@Override
+	public List<MessageBean> queryMessage(String sql) {
+		List<MessageBean> list = new ArrayList<>();
+		Session session = factory.getCurrentSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			list = dao.queryMessage(sql);
+			tx.commit();
+		} catch(Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		}	
+		return list;
+	}
+
+
 }

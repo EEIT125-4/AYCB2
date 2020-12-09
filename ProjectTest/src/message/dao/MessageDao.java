@@ -16,12 +16,15 @@ public interface MessageDao {
 
 	List<MessageBean> getAllMessages();
 
-	MessageBean getMessage(int pk);
+	MessageBean getMessage(String pk);
 
 	int deleteMessage(String pk);
 
 	int updateMessage(MessageBean mb);
 	
 	String getNewId(Date date);
+	
+	List<MessageBean>queryMessage(String sql);
+	
 
 }

@@ -11,7 +11,7 @@
 <link rel="icon" href="image/logo.ico" type="image/x-icon">
 <title>登入</title>
 </head>
-<jsp:useBean id="login_session" class="member.MemberBean" scope="session" />
+<jsp:useBean id="login_session" class="member.model.MemberBean" scope="session" />
 <%@include file="jspf/header.jspf"%>
 <div style="position: relative; top: 200px;">
 	<form action=".\RegisterServlet" method="post">

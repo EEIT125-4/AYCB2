@@ -1,9 +1,20 @@
 package member;
 
-import java.io.*;
+import java.io.Serializable;
 import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+
+
 public class MemberBean implements Serializable {
-	
+
+	Integer pk;	
 	private String name;
 	private String account;
 	private String password;
