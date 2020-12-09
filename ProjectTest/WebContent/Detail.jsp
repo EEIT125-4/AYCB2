@@ -61,7 +61,7 @@
 		</div>
 		<div class="rightoutbox">
 			<c:forEach var="D" items="${Detail}">
-				<form name="AddForm" action="" method="POST">
+				<form name="AddForm" action="ControllerServlet" method="POST">
 					<input type="hidden" name="todo" value="add">
 					<div class="rightside">
 						<div class="imgbox">
@@ -95,7 +95,7 @@
 								</div>
 								<div class="infobtn">
 									<input class="btn" type="submit" value="加入購物車"> <input
-										type="hidden" name="product_No" value="${D.productno}">
+										type="hidden" name="productno" value="${D.productno}">
 								</div>
 							</div>
 						</div>
