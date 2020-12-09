@@ -1,11 +1,10 @@
-package product.cartDao;
+package product.cartService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import product.cartModel.OrderBean;
 
-public interface OrderDao {
+public interface OrderService {
 
 	List<OrderBean> selectOrderitem(String name);
 

@@ -1,9 +1,10 @@
-package product;
+package product.cartController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -20,11 +21,13 @@ import javax.sql.DataSource;
 
 
 import member.MemberBean;
-import product.cartDao.OrderDAO;
+import product.cartDao.OrderDao;
 
-/**
- * Servlet implementation class OrderServlet
- */
+import product.cartModel.OrderBean;
+import product.cartService.OrderService;
+import product.cartService.impl.OrderServiceImpl;
+
+
 @WebServlet("/OrderInsertServlet")
 public class OrderInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,17 +36,13 @@ public class OrderInsertServlet extends HttpServlet {
 	DataSource ds = null;
 	Connection conn= null;
     
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public OrderInsertServlet() {
         super();
         
     }
 
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
+	
 	public void init(ServletConfig config) throws ServletException {
 		
 		try {
@@ -51,7 +50,7 @@ public class OrderInsertServlet extends HttpServlet {
 			ds=(DataSource)ctxt.lookup("java:comp/env/jdbc/EmployeeDB");
 			
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			throw new ServletException(e);
 		}
@@ -59,44 +58,42 @@ public class OrderInsertServlet extends HttpServlet {
     }
 	
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8"); 
 		response.setContentType(CONTENT_TYPE);
 		PrintWriter out = response.getWriter();
-		
-		
-		
+			
 		try (
 			Connection conn = ds.getConnection();			
 		) {
-			
-			OrderDAO orderDao = new OrderDAO(conn);
-			
-			OrderBean order = new OrderBean();
+						
+			OrderService os = new OrderServiceImpl();
 			
 			
 			int totalPrice = (Integer) request.getSession(true).getAttribute("totalPrice");
 			
 			int totalQtyOrder=(Integer) request.getSession(true).getAttribute("totalQtyOrdered");
 			MemberBean memberBean =((MemberBean)request.getSession(true).getAttribute("login_session"));
-			order.setCustomerId(memberBean.getName());
+			
+			java.util.Date date = new Date(); 
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());	
+			
+			OrderBean order = new OrderBean( null, memberBean.getName(), sqlDate, totalPrice, totalQtyOrder, "付款成功");
+			
+			
+//			order.setCustomerId(memberBean.getName());
 			System.out.println("memberBean"+memberBean.getName());
-			order.setPrice(totalPrice);
-			order.setQuantity(totalQtyOrder);
-
-			orderDao.insertOrderitem(order);
+//			order.setPrice(totalPrice);
+//			order.setQuantity(totalQtyOrder);
+			os.insertOrderitem(order);
+			
 			
 			response.setHeader("Refresh","0.5;commit.jsp");
 			request.getSession(true).removeAttribute("cart");//移除session	
@@ -104,8 +101,7 @@ public class OrderInsertServlet extends HttpServlet {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
-		}
-	
+		}	
 		
 //		ServletContext servletContext = getServletContext();
 //		RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/commit.jsp");
