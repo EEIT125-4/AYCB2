@@ -1,57 +1,90 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link REL=STYLESHEET HREF="css/member.css" TYPE="text/css">
-<link rel="icon" href="image/logo.ico" type="image/x-icon">
-<title>登入</title>
-</head>
-<jsp:useBean id="login_session" class="member.MemberBean" scope="session" />
-<%@include file="jspf/header.jspf"%>
-<div style="position: relative; top: 200px;">
-	<form action=".\RegisterServlet" method="post">
-		<fieldset
-			style="margin: auto; border: 3px solid black; width: 550px;border-radius: 6px;">
-			<legend
-				style="background-color: lightgray; border-radius: 3px; width: 100px; margin: auto;">會員資料更新</legend>
-			<table>
-				<tr>
-					<td>姓名:</td>
-					<td><input name="usename"
-						value=<jsp:getProperty name="login_session" property="name"/>></td>
-				</tr>
-				<tr>
-					<td>聯絡地址:</td>
-					<td><input name="useraddress"
-						value=<jsp:getProperty name="login_session" property="address" />></td>
-				</tr>
-				<tr>
-					<td>聯絡電話:</td>
-					<td><input name="userphone"
-						value=<jsp:getProperty name="login_session" property="phone" />></td>
-				</tr>
-				<tr>
-					<td>E-mail:</td>
-					<td><input name="useremail" disabled="disabled"
-						value=<jsp:getProperty name="login_session" property="email" />></td>
-				</tr>
+<style>
+</style>
 
-				<tr>
-					<td>密碼:</td>
-					<td><input name="pwd"
-						value=<jsp:getProperty name="login_session" property="password" />>
-				<tr>
-					<td>
-			</table>
-			<input type="submit" name="update" value="確認更新"
-				style="margin-left: 280px">
-		</fieldset>
-	</form>
+<meta charset="UTF-8">
+<title>MVC</title>
+<script type="text/javascript">
+  function confirmDelete(memberID){
+	  var result = confirm("確定取消參加(帳號:" + memberID + ")?");
+	  if (result) {
+		  document.forms[0].finalDecision.value = "DELETE";
+	      return true;
+	  }
+	  return false;
+  }
+  function confirmUpdate(memberID){
+	  var result = confirm("確定送出此筆記錄(帳號:" + memberID + ")?");
+	  if (result) {
+		  document.forms[0].finalDecision.value = "UPDATE";
+	      return true;
+	  }
+	  return false;
+  }
+</script>
+</head>
+<body>
+<p>&nbsp;</p>
+<hr>
+<div class='center' >
+<H1 class='center'>更新報名資料</H1>
+<hr>
+<p> 
+<Form class='center' Action="AttendanceUpdate.do" method="POST" >
+    <input type="hidden" name="aid"     value="${a.aid}" >
+    <input type="hidden" name="MemberID"     value="${a.memberID}" >
+    <input type="hidden" name="finalDecision" value="" > 
+    <Table>
+         <TR>
+             <TD align="RIGHT">活動ID：</TD>
+             <TD align="LEFT" >
+                <input type="text" name="EventID" value="${a.eventID}${param.eventID}"  size="30">
+                <font color='red' size='-3'>${error.eid}</font>
+             </TD>
+         </TR>   
+          <TR>
+             <TD align="RIGHT">Phone：</TD>
+             <TD align="LEFT" > 
+               <input type="text" name="Phone" value="${a.phone}${param.phone}">
+               <font color='red' size='-3'>${error.phone}</font>
+             </TD>
+         </TR>             
+         <TR>
+             <TD align="RIGHT">mail：</TD>
+             <TD align="LEFT" > 
+               <input type="text" name="Mailaddress" value="${a.mailaddress}${param.mailaddress}">
+               <font color='red' size='-3'>${error.mail}</font>
+             </TD>
+         </TR>             
+                   
+                      
+         <TR>
+             <TD align="RIGHT">pax：</TD>
+             <TD align="LEFT" > 
+               <input type="text" name="Pax" value="${a.pax}${param.pax}">
+               <font color='red' size='-3'>${error.pax}</font>
+             </TD>
+         </TR>    
+         
+        <TR>
+            <TD colspan="2" align="center">     
+            <input type="submit" value="更新" name='updateBtn' onclick="return confirmUpdate('${a.memberID}');"> 
+            <input type="submit" value="刪除" name='deleteBtn' onclick="return confirmDelete('${a.memberID}');" >
+            </TD>
+            </TR>
+         </Table>
+         <c:if test="${not empty requestScope.modify}">   
+           <c:remove var="member" scope="request" />       
+         </c:if>
+</Form>
+<p/>
+<small>&lt;&lt;<a href="queryAllAttendance.do">回上一頁</a>&gt;&gt;</small>
 </div>
 </body>
+
 </html>
