@@ -14,25 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-/**
- * Servlet implementation class Login
- */
+
 @WebServlet("/MemberLogin")
 public class MemberLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
+	
 	public MemberLogin() {
 		super();
-		// TODO Auto-generated constructor stub
+	
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -58,7 +50,8 @@ public class MemberLogin extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			Statement statement = conn.createStatement();
 			System.out.println("連結資料庫");
-			ResultSet rs = statement.executeQuery("select*from member");
+			ResultSet rs = statement.executeQuery("select*from Memberbean");
+			Integer id=null;
 			String name = null;
 			String account = null;
 			String password = null;
@@ -69,8 +62,9 @@ public class MemberLogin extends HttpServlet {
 			String gender = null;
 
 			while (rs.next()) {
+				id=Integer.parseInt(rs.getString("id"));
 				name = rs.getString("name");
-				account = rs.getString("accout_id");
+				account = rs.getString("account");
 				password = rs.getString("password");
 				address = rs.getString("address");
 				phone = rs.getString("phone");
@@ -85,8 +79,10 @@ public class MemberLogin extends HttpServlet {
 
 			}
 			if (login) {
-				MemberBean member = new MemberBean(name, account, password, address, phone, birth, email, gender);
+				MemberBean member = new MemberBean(id,name, account, password, address, phone, birth, email, gender);
+			
 				request.getSession(true).setAttribute("login_session", member);
+				
 				if(!account.equals("admin")) {
 					response.sendRedirect("Home.jsp");
 				}else {
@@ -105,13 +101,9 @@ public class MemberLogin extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
 
