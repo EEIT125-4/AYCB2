@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.cartModel.OrderBean;
+import product.cartModel.ProductDB;
 
 public interface OrderDao {
 
@@ -16,5 +17,7 @@ public interface OrderDao {
 	boolean deleteOrderitem(int no);
 
 	OrderBean selectUpdateitem(int ino);
+	
+	ProductDB getProductDB();
 
 }
