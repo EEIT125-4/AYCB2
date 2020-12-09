@@ -7,15 +7,19 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+
+import comment.dao.CommentDao;
+import comment.dao.CommentDaoImp;
 import comment.model.CommentBean;
 import comment.util.HibernateUtils;
 
 
 public class CommentServiceImpl implements CommentService {
-
+	
 	SessionFactory factory = HibernateUtils.getSessionFactory();
-
+	
+	CommentDao dao= new CommentDaoImp();
+	
 	//新增一筆留言
 	@Override
 	public int insertComment(CommentBean cb) {
@@ -37,17 +41,18 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	//查詢所有留言
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<CommentBean> selectComment() {
+	public List<CommentBean> selectAll() {
+		System.out.println("dao"+dao);
 		List<CommentBean> list = new ArrayList<>();
-		String hql = "FROM CommentBean";
+		
 		Session session = factory.getCurrentSession();
 		Transaction tx = null;
+		
 		try {
 			tx = session.beginTransaction();
-			Query<CommentBean> query = session.createQuery(hql);
-			list = query.getResultList();
+			list=dao.selectAll();
+			System.out.println("dao result"+list);
 			tx.commit();
 		} catch(Exception e) {
 			if (tx != null) {
@@ -67,9 +72,7 @@ public class CommentServiceImpl implements CommentService {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			CommentBean cb = new CommentBean();
-			cb.setId(id);
-			session.delete(cb);
+			dao.deleteComment(id);
 			count++;
 			tx.commit();
 		} catch(Exception e) {
@@ -84,14 +87,14 @@ public class CommentServiceImpl implements CommentService {
 
 //選擇一筆需要更新的留言
 	@Override
-	public CommentBean selectUpdateitem(int id) {
+	public List<CommentBean> selectUpdateitem(Integer commentId) {
 
-		CommentBean cb = null;
 		Session session = factory.getCurrentSession();
 		Transaction tx = null;
+		List<CommentBean> list=null;
 		try {
 			tx = session.beginTransaction();
-			cb = session.get(CommentBean.class, id);
+			list = dao.selectUpdateitem(commentId);
 			tx.commit();
 		} catch(Exception e) {
 			if (tx != null) {
@@ -99,7 +102,7 @@ public class CommentServiceImpl implements CommentService {
 			}
 			e.printStackTrace();
 		}
-		return cb;
+		return list;
 	}
 	//更新留言
 	@Override
@@ -109,7 +112,7 @@ public class CommentServiceImpl implements CommentService {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.saveOrUpdate(cb);
+			dao.updateComment(cb);
 			count++;
 			tx.commit();
 		} catch(Exception e) {

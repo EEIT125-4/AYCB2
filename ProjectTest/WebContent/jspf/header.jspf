@@ -35,17 +35,17 @@ response.setDateHeader("Expires", -1); // Prevents caching at the proxy server
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link REL=STYLESHEET HREF="css/Home.css" TYPE="text/css">
+<link REL=STYLESHEET HREF="../css/Home.css" TYPE="text/css">
 <link rel="icon" href="image/logo.ico" type="image/x-icon">
 <body>
 	<div class="box">
 		<div id="top" class="top_box1">
 			<div class="logo_box">
 				<div class="logoimg">
-					<a href="Home.jsp"><img src="image/logo.png"></a>
+					<a href="Home.jsp"><img src="../image/logo.png"></a>
 				</div>
 				<div class="logotext">
-					<a href="Home.jsp"><img src="image/2.png"></a>
+					<a href="Home.jsp"><img src="../image/2.png"></a>
 				</div>
 				<div class="other">
 					<ul>

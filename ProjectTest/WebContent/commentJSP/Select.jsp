@@ -17,7 +17,7 @@
 
 <title>留言紀錄</title>
 </head>
-<%@include file="jspf/header.jspf"%>
+<%@include file="../jspf/header.jspf"%>
 <% System.out.println("body"); %>>
 <fieldset style="margin: auto;position: relative;top: 200px;width: 1200px;border: 1px solid transparent;">
 
@@ -30,12 +30,12 @@
 				<hr width=70% size=1 color=#BFBFBF style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)">
 				
 				<dt>
-					<A class="a1" href="DisplayBoard.jsp">
+					<A class="a1" href="commentJSP/DisplayBoard.jsp">
 						<h2>留言專區</h2>
 					</A>
 				</dt>
 				<dt>
-					<A class="a1" href="article.jsp">
+					<A class="a1" href="commentJSP/article.jsp">
 						<h2>美誌分享</h2>
 					</A>
 				</dt>

@@ -12,10 +12,10 @@ response.setDateHeader("Expires", -1); // 不想要暫存 Prevents caching at th
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/comment.css" />
+<link rel="stylesheet" href="../css/comment.css" />
 <title>留言板</title>
 </head>
-<%@include file="jspf/header.jspf"%>
+<%@include file="../jspf/header.jspf"%>
 <div>
 	<div
 		style="float: left; width: 20%; text-align: center; margin-left: 220px; position: relative; top: 200px;">
@@ -27,11 +27,11 @@ response.setDateHeader("Expires", -1); // 不想要暫存 Prevents caching at th
 			<hr width=70% size=1 color=#BFBFBF
 				style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)">
 			<dt>
-				<A class="a1" href="DeleteServlet1"><h2>查詢留言</h2></A>
+				<A class="a1" href="../DeleteServlet1"><h2>查詢留言</h2></A>
 			</dt>
 
 			<dt>
-				<A class="a1" href="article.jsp">
+				<A class="a1" href="commentJSP/article.jsp">
 					<h2>美誌分享</h2>
 				</A>
 			</dt>
@@ -87,7 +87,7 @@ response.setDateHeader("Expires", -1); // 不想要暫存 Prevents caching at th
 </div>
 </html>
 <!-- <!-- <script> -->
--->
+
 <!-- // 	var named = name; -->
 
 <!-- // 	function delete1(id) { -->

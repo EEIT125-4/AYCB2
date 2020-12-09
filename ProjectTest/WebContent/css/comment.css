@@ -157,8 +157,10 @@ body {
 	background-color:#FFEEDD;
 	margin-left: 250px;
     border: 1px solid black;
+    
 
 }
 .selectrecord {
   border-collapse: collapse;
+  text-align:center;
 }

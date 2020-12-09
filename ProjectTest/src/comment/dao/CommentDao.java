@@ -10,15 +10,19 @@ public interface CommentDao {
 	int insertComment(CommentBean cb);
 
 	//查詢所有留言
-	List<CommentBean> selectComment();
+	List<CommentBean> selectAll();
 
 	// 刪除一筆留言
 	int deleteComment(int id);
 
 	//選擇一筆需要更新的留言
-	CommentBean selectUpdateitem(int id);
+	List<CommentBean> selectUpdateitem(Integer id);
+
 
 	//更新留言
-	int updateComment(CommentBean cb);
+
+
+	Integer updateComment(CommentBean cb);
+
 
 }

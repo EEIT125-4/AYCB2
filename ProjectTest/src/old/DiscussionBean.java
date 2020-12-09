@@ -1,8 +1,7 @@
 package old;
 
-import java.io.Serializable;
 
-public class DiscussionBean implements Serializable {
+public class DiscussionBean  {
 	private String id;
 	private String name;
 	private String gender;

@@ -9,12 +9,12 @@ public interface CommentService {
 	// DiscussionBean變數名稱
 	int insertComment(CommentBean commentData);
 
-	List<CommentBean> selectComment();
+	List<CommentBean> selectAll();
 
 	int deleteComment(int id);
 
-	CommentBean selectUpdateitem(int id);
-
 	int updateComment(CommentBean cb);
+
+	List<CommentBean> selectUpdateitem(Integer commentId);
 
 }

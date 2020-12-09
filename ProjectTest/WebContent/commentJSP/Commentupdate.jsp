@@ -19,13 +19,13 @@
 	
 	
 </c:forEach>
-<link rel="stylesheet" href="css/comment.css" />
+<link rel="stylesheet" href="../css/comment.css" />
 
 <jsp:useBean id="bean" class="comment.model.CommentBean" scope="session" />
 
 <fieldset class="updateform">
 	<legend class="title">編輯留言</legend>
-	<form  action="DeleteServlet1" method="post">
+	<form  action="../DeleteServlet1" method="post">
         <p>  
             <label class="t1" for="">名稱:</label>
             <input type="text" name="name" value="${name}">   

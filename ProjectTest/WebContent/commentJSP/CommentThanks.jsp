@@ -16,7 +16,7 @@ window.alert("留言成功");
 </script>
 
 </head>
-<%@include file="jspf/header.jspf"%>
+<%@include file="../jspf/header.jspf"%>
 <form class="arrow_box">
 留言成功!
 </form>
@@ -35,7 +35,6 @@ window.alert("留言成功");
 <script>
         window.alert("交易完成!");
         setTimeout("location.href='DeleteServlet1'",3000);
-        //DisplayBoard.jsp
     </script>
 
 </body>
