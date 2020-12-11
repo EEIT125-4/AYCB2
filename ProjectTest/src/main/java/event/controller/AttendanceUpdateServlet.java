@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +24,12 @@ public class AttendanceUpdateServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
+		
 		HttpSession hsession = request.getSession();
 		Map<String,String> errorMsg = new HashMap<>();
 		hsession.setAttribute("error", errorMsg);
 		String modify = request.getParameter("finalDecision");
+		
 		Integer aid = Integer.valueOf(request.getParameter("aid"));
 		AttendanceService as = new AttendanceServiceImpl();
 		int count=0;
@@ -67,13 +69,14 @@ public class AttendanceUpdateServlet extends HttpServlet {
 				errorMsg.put("phone","手機號碼長度錯誤");
 			}		
 			//如果輸入資料都正確,進行修改動作
-			if (!errorMsg.isEmpty()) {
-				RequestDispatcher rd = request.getRequestDispatcher("event/showAttendance.jsp");
-				rd.forward(request, response);
-				return;
-			}
+//			if (!errorMsg.isEmpty()) {
+//				RequestDispatcher rd = request.getRequestDispatcher("event/showAttendance.jsp");
+//				rd.forward(request, response);
+//				return;
+//			}
 		
-			Attendance a = new Attendance(aid, id, phone, eid, mail, pax);
+			Attendance a = new Attendance(aid, id, phone, mail, eid, pax);
+			
 			System.out.println(aid);
 			count = as.updateAttendance(a);
 			if(count==1){
