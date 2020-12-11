@@ -1,0 +1,19 @@
+.img{
+    width: 100px;
+    height: 100px;
+}
+
+#tab{
+    margin: auto;
+} 
+#butt{
+   width:auto;
+   height:auto;
+   margin-top: 0px;
+       }
+fieldset{
+    position: relative;
+    top: 200px;
+    margin: auto;
+    width: 650px;
+}

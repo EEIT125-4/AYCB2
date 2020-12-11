@@ -1,0 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<link REL=STYLESHEET HREF="${pageContext.request.contextPath}/css/Footer.css" TYPE="text/css">
+	
+<footer>
+	<div class="footer">VERSION 1.0</div>
+</footer>

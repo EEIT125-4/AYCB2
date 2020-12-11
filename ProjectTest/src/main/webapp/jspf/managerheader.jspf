@@ -1,0 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%-- <%@ page import="member.*"%> --%>
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
+<link REL=STYLESHEET HREF="css/Home.css" TYPE="text/css">
+<link rel="icon" href="image/logo.ico" type="image/x-icon">
+<title>Manager</title>
+</head>
+<body>
+	<div class="box">
+		<div id="top" class="top_box1">
+			<div class="logo_box">
+				<div class="logoimg">
+					<a href=""><img src="image/logo.png"></a>
+				</div>
+				<div class="logotext">
+					<a href=""><img src="image/2.png"></a>
+				</div>
+				<div class="other">
+					<ul>
+						<li class="other_ul_li"><a id="logout" class="other_ul_li_a"
+							href="logouttest">登出</a></li>
+						<li class="other_ul_li"><a id="user" class="other_ul_li_a"
+							href="">訪客</a></li>
+						<li class="other_ul_li"><a id="login" class="other_ul_li_a"
+							href="login.jsp">登入/註冊</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="top_box2">
+			<div class="menu_box">
+				<div class="menu">
+					<ul class="menu_ul">
+						<li class="menu_ul_li">優惠活動</li>
+						<li class="menu_ul_li">熱銷產品</li>
+						<li class="menu_ul_li"><a class="menu_ul_li_a"
+							href="Manager">保養品</a>
+							<div class="fun_box">
+								<ul class="fun_box_ul">
+									<c:forEach var="cate" items="${rs.rows}">
+										<li class="fun_box_ul_li"><a class="fun_box_ul_li_a"
+											href="ManagerScreening?cate=${cate.product_category}">${cate.product_category}</a></li>
+									</c:forEach>
+								</ul>
+							</div></li>
+						<li class="menu_ul_li">討論區</li>
+						<li class="menu_ul_li">預約活動</li>
+					</ul>
+				</div>
+				<div class="search">
+					<form action="ManagerScreening">
+						<input class="searchinput" type="text" name="keyword">
+						<button type="submit">
+							<i class="fa fa-search"></i>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 	<script> -->
+<%-- 	var login=<%=login%> --%>
+// 	if(login){
+<%-- 		document.getElementById("user").innerText='<%=userName%>'; --%>
+
+// 		} else {
+// 			document.getElementById("user").innerHTML = "訪客";
+
+// 		}
+
+// 		document.getElementById("user").style.display = "block";
+// 		if (login) {
+// 			document.getElementById("login").style.display = "none";
+// 			document.getElementById("logout").style.display = "block";
+// 		} else {
+// 			document.getElementById("login").style.display = "block";
+// 			document.getElementById("logout").style.display = "none";
+// 		}
+<!-- 	</script> -->
