@@ -37,7 +37,7 @@ public class ProductDetailServlet extends HttpServlet {
 		request.setAttribute("Brands", brand);
 		request.setAttribute("series", series);
 		request.setAttribute("cates", cate);
-		request.getRequestDispatcher("Detail.jsp").forward(request, response);
+		request.getRequestDispatcher("product/Detail.jsp").forward(request, response);
 	}
 
 }

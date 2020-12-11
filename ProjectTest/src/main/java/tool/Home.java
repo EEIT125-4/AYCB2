@@ -30,6 +30,7 @@ public class Home extends HttpServlet {
 		List<ProductBean> cate = ps.getCate();
 		
 		request.setAttribute("cates", cate);
+		request.getSession().setAttribute("cates", cate);
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
